@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Button from "./Button"
 import Header from "./Header"
-import Statistic from "./Statistic"
+
+import Statistics from "./Statistics"
 
 import './App.css'
 
@@ -32,10 +33,7 @@ const App = () => {
       <Header text="Statistics" />
 
       <div id="statistics">
-        <Statistic text="Good" val={good} />
-        <Statistic text="Neutral" val={neutral} />
-        <Statistic text="Bad" val={bad} />
-
+        <Statistics good={good} neutral={neutral} bad={bad} />
       </div>
 
 
