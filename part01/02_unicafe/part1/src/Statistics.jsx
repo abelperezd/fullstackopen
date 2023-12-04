@@ -12,6 +12,14 @@ const Statistics = ({ good, neutral, bad }) => {
     const getAverage = () => (good * 1 + neutral * 0 + bad * -1) / getDivisor();
     const getPositiveAverage = () => good / getDivisor();
 
+    if (getAll() === 0) {
+        return (
+            <>
+                <p>No feedback given yet.</p>
+            </>
+        )
+    }
+
     return (
         <>
             <Statistic text="Good" val={good} />
