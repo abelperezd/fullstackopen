@@ -1,16 +1,19 @@
-const People = ({ persons }) => {
+import Person from "./Person"
+
+const People = ({ persons, filter }) => {
+
+  const getFilteredPeople = () => persons.filter(item => item.name.toLowerCase().startsWith(filter));
+
   console.log(persons)
   return (
     <div>
       <ul>
         {
-          persons.map(item => (
-            <li key={item.id}>{item.name} - {item.number}</li>
+          getFilteredPeople().map(item => (
+            <Person key={item.id} item={item} />
           ))
-
         }
       </ul>
-
     </div>
   )
 }
