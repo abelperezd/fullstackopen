@@ -1,16 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Form from "./Form"
 import People from "./People"
 import Filter from "./Filter"
+import axios from 'axios'
+
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      id: 1,
-      number: 673984098
-    }
-  ])
+
+  //get the data from the local db
+  const getDbHook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+      .catch(error => console.log(error))
+  }
+
+  useEffect(getDbHook, [])
+
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')

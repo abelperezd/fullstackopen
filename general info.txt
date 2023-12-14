@@ -6,7 +6,9 @@ cd part1
 npm install
 npm run dev
 
+
 understainding "this" in js: https://egghead.io/courses/understand-javascript-s-this-keyword-in-depth
+
 
 js guide: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 js guide: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_overview
@@ -16,7 +18,25 @@ another js book (from basic to expert): https://eloquentjavascript.net/
 js video-course: https://www.youtube.com/playlist?list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP
 free js courses: https://egghead.io/q?access_state=free
 
+
 react docu: https://react.dev/learn
 react free course: https://egghead.io/courses/react-with-class-components-fundamentals-4351f8bb
 react free course for begginers: https://egghead.io/lessons/react-a-beginners-guide-to-react-introduction
+
+
+install test-server:
+in the root of the project: 
+    npx json-server --port 3001 --watch db.json
+    save a db.json with the desired data
+to install it as developer dependency:
+    npm install json-server --save-dev
+    in the package.json, in "scripts" add the following line:
+        "server": "json-server -p3001 --watch db.json"
+npm run server (in a separate console window)
+
+install axios:
+in the root of the project:
+    npm install axios
+
+
  
