@@ -15,25 +15,26 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
       return;
     }
 
-    if (checkIfNameExists()) {
-      alert(`${newName} is already added to phonebook`);
-      return;
-    }
-
     const item = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1,
+      number: newNumber
+    }
+
+    //update if exists
+    if (checkIfNameExists() && window.confirm(`${newName} already exists. Update?`)) {
+      let person = persons.filter(p => p.name == newName)[0];
+
+      phonebookService.update(person.id, item)
+        .then(response => setPersons(persons.map(p => p.id !== person.id ? p : response)))
+      return;
     }
 
     phonebookService.create(item)
       .then(response => {
-        console.log("object created! ", response);
         setPersons(persons.concat(response));
         setNewName('');
         setNewNumber('');
       })
-
   }
 
   const handleNameInputChanged = (event) => {

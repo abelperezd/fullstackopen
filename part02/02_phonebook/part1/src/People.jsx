@@ -1,6 +1,6 @@
 import Person from "./Person"
 
-const People = ({ persons, filter }) => {
+const People = ({ persons, filter, setPersons }) => {
 
   const getFilteredPeople = () => persons.filter(item => item.name.toLowerCase().startsWith(filter));
 
@@ -10,7 +10,7 @@ const People = ({ persons, filter }) => {
       <ul>
         {
           getFilteredPeople().map(item => (
-            <Person key={item.id} item={item} />
+            <Person key={item.id} item={item} persons={persons} setPersons={setPersons} />
           ))
         }
       </ul>

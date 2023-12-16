@@ -36,7 +36,7 @@ const App = () => {
       <h2>Numbers</h2>
 
       <Filter persons={persons} filter={filter} handleFilterChanged={handleFilterChanged} />
-      <People persons={persons} filter={filter} />
+      <People persons={persons} filter={filter} setPersons={setPersons} />
     </div>
   )
 }
