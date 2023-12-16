@@ -2,20 +2,14 @@ import { useState, useEffect } from 'react'
 import Form from "./Form"
 import People from "./People"
 import Filter from "./Filter"
-import axios from 'axios'
-
+import phonebookService from './services/phonebook'
 
 const App = () => {
 
   //get the data from the local db
   const getDbHook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
+    phonebookService.getAll()
+      .then(data => setPersons(data))
       .catch(error => console.log(error))
   }
 

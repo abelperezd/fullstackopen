@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import phonebookService from './services/phonebook'
 
 const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewName, handleFilterChanged }) => {
 
@@ -14,7 +15,6 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
       return;
     }
 
-
     if (checkIfNameExists()) {
       alert(`${newName} is already added to phonebook`);
       return;
@@ -26,9 +26,13 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
       id: persons.length + 1,
     }
 
-    setPersons(persons.concat(item));
-    setNewName('');
-    setNewNumber('');
+    phonebookService.create(item)
+      .then(response => {
+        console.log("object created! ", response);
+        setPersons(persons.concat(response));
+        setNewName('');
+        setNewNumber('');
+      })
 
   }
 
