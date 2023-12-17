@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import phonebookService from './services/phonebook'
 
-const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewName, handleFilterChanged }) => {
+const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewName, handleFilterChanged, setNotificationMessage }) => {
 
   const checkIfNameExists = () => persons.some(item => item.name === newName)
 
@@ -11,7 +11,7 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
     event.preventDefault()
 
     if (!areFieldsValid()) {
-      alert(`Some fields are empty.`)
+      setNotificationMessage("red", `Some fields are empty.`);
       return;
     }
 
@@ -25,7 +25,10 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
       let person = persons.filter(p => p.name == newName)[0];
 
       phonebookService.update(person.id, item)
-        .then(response => setPersons(persons.map(p => p.id !== person.id ? p : response)))
+        .then(response => {
+          setPersons(persons.map(p => p.id !== person.id ? p : response))
+          setNotificationMessage("green", `${person.name} updated.`)
+        })
       return;
     }
 
@@ -34,6 +37,8 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
         setPersons(persons.concat(response));
         setNewName('');
         setNewNumber('');
+
+        setNotificationMessage("green", `${response.name} added.`)
       })
   }
 

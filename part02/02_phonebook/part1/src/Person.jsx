@@ -1,13 +1,14 @@
 import phonebookService from './services/phonebook'
+import Notification from './Notification';
 
-
-const Person = ({ item, persons, setPersons }) => {
+const Person = ({ item, persons, setPersons, setNotificationMessage }) => {
 
     const removePerson = () => {
         if (!window.confirm(`Remove ${item.name}?`))
             return;
         phonebookService.remove(item.id)
-            .then(response => setPersons(persons.filter(p => p.id !== item.id)))
+            .catch(error => setNotificationMessage("red", `${item.name} wasn't found in the server.`))
+            .finally(response => setPersons(persons.filter(p => p.id !== item.id)))
     }
 
     return (
