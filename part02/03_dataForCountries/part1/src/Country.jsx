@@ -1,8 +1,12 @@
 import { useState } from 'react'
-
+import Weather from './Weather';
 const Country = ({ item }) => {
 
+
+
   let name = item.name.common;
+
+  console.log("Name in Country: ", name)
   return (
     <div>
       <h2>{name}</h2>
@@ -24,6 +28,8 @@ const Country = ({ item }) => {
           Object.entries(item.languages).map(([key, value]) => <li key={name + key}>{value}</li>)
         }
       </ul>
+
+      <Weather country={name} />
 
     </div>
   )
