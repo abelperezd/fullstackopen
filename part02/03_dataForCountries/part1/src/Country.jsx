@@ -5,8 +5,6 @@ const Country = ({ item }) => {
   let name = item.name.common;
   return (
     <div>
-
-
       <h2>{name}</h2>
 
       <img src={item.flags.png} />

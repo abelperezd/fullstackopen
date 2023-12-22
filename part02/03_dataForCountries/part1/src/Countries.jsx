@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import Country from './Country';
 
-const Countries = ({ db, searchVal }) => {
+const Countries = ({ db, countrySelected, setCountrySelected }) => {
 
-  const findCountries = () => db == null || searchVal.length == 0 ? null : db.filter(c => c.name.common.toLowerCase().startsWith(searchVal));
+  const findCountries = () => db == null || countrySelected.length == 0 ? null : db.filter(c => c.name.common.toLowerCase().startsWith(countrySelected.toLowerCase()));
 
   let countriesFound = findCountries();
 
+  console.log("cs", countrySelected)
+
+  console.log(countriesFound)
 
   if (countriesFound == null || countriesFound.length == 0)
     return (
@@ -30,7 +33,12 @@ const Countries = ({ db, searchVal }) => {
         {
           countriesFound.map(element => {
             let name = element.name.common;
-            return <p key={name}>{name}</p>
+            return (
+              <div key={name}>
+                <span style={{ marginRight: '10px' }}>{name}</span>
+                <button onClick={() => setCountrySelected(name)}>Show</button>
+              </div>
+            )
           })
         }
       </div>

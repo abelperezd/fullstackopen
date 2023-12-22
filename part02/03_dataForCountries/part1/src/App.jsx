@@ -16,15 +16,19 @@ const App = () => {
 
   const [searchVal, setSearchVal] = useState('')
   const [db, setDb] = useState(null)
+  const [countrySelected, setCountrySelected] = useState('')
 
-
-  const handleValueChanged = (event) => setSearchVal(event.target.value);
+  const handleValueChanged = (event) => {
+    setSearchVal(event.target.value);
+    setCountrySelected(event.target.value);
+  };
 
   return (
     <div>
       <h1>Country Finder</h1>
       <SearchField searchVal={searchVal} handleValueChanged={handleValueChanged} />
-      <Countries db={db} searchVal={searchVal} />
+      <br />
+      <Countries db={db} countrySelected={countrySelected} setCountrySelected={setCountrySelected} />
     </div>
   )
 }
