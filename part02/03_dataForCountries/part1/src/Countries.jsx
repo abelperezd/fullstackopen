@@ -7,10 +7,6 @@ const Countries = ({ db, countrySelected, setCountrySelected }) => {
 
   let countriesFound = findCountries();
 
-  console.log("cs", countrySelected)
-
-  console.log(countriesFound)
-
   if (countriesFound == null || countriesFound.length == 0)
     return (
       <div>
@@ -43,8 +39,6 @@ const Countries = ({ db, countrySelected, setCountrySelected }) => {
         }
       </div>
     )
-
-  console.log(countriesFound[0])
 
   //countries found = 1
   return (

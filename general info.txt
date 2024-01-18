@@ -1,28 +1,11 @@
-resources:
+initialize a project:
+npm init
 
 how to start and run a node project with Vite:
 npm create vite@latest part1 -- --template react
 cd part1
 npm install
 npm run dev
-
-
-understainding "this" in js: https://egghead.io/courses/understand-javascript-s-this-keyword-in-depth
-
-
-js guide: https://developer.mozilla.org/en-US/docs/Web/JavaScript
-js guide: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_overview
-deep js free book: https://github.com/getify/You-Dont-Know-JS
-js resource: https://javascript.info/
-another js book (from basic to expert): https://eloquentjavascript.net/
-js video-course: https://www.youtube.com/playlist?list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP
-free js courses: https://egghead.io/q?access_state=free
-
-
-react docu: https://react.dev/learn
-react free course: https://egghead.io/courses/react-with-class-components-fundamentals-4351f8bb
-react free course for begginers: https://egghead.io/lessons/react-a-beginners-guide-to-react-introduction
-
 
 install test-server:
 in the root of the project: 
@@ -38,5 +21,40 @@ install axios:
 in the root of the project:
     npm install axios
 
+start project quicker:
+in package.json, in scripts, add:
+"start": "node index.js",
+and you can run the project using:
+npm start
 
- 
+install express:
+npm install express
+
+update project dependencies:
+npm update
+
+install all dependencies in the package.json file:
+npm install
+
+install nodemon (it allows us to avoid having to restart the application every time we make a change)
+npm install --save-dev nodemon
+
+start application with nodemon:
+node_modules/.bin/nodemon index.js
+alternative: add this to package.json, in scripts:
+"dev": "nodemon index.js",
+and start like this:
+npm run dev
+
+install POSTMAN in VSCode:
+From the Extension tab on the left -> search for Postman -> First result (Verified Publisher) -> Install. You will then see an extra icon added on the activity bar below the extensions tab. 
+To use it, we have to create a folder in the root of the project named "requests" and create a file with the extension ".rest". There we will and the commands (E.g: GET http://localhost:3001/api/notes)
+And we will click "Send Request"
+
+install cors (it allow us to communicate different ports in localhost)
+npm install cors
+const cors = require('cors')
+app.use(cors())
+
+create a production build in vite:
+npm run build

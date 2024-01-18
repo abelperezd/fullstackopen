@@ -1,0 +1,18 @@
+understainding "this" in js: https://egghead.io/courses/understand-javascript-s-this-keyword-in-depth
+
+
+js guide: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+js guide: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Language_overview
+deep js free book: https://github.com/getify/You-Dont-Know-JS
+js resource: https://javascript.info/
+another js book (from basic to expert): https://eloquentjavascript.net/
+js video-course: https://www.youtube.com/playlist?list=PLlasXeu85E9cQ32gLCvAvr9vNaUccPVNP
+free js courses: https://egghead.io/q?access_state=free
+
+
+react docu: https://react.dev/learn
+react free course: https://egghead.io/courses/react-with-class-components-fundamentals-4351f8bb
+react free course for begginers: https://egghead.io/lessons/react-a-beginners-guide-to-react-introduction 
+
+functional programming js:
+https://www.youtube.com/watch?v=BMUiFMZr7vk&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&index=1
