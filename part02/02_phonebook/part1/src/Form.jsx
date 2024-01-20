@@ -27,8 +27,11 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
       phonebookService.update(person.id, item)
         .then(response => {
           setPersons(persons.map(p => p.id !== person.id ? p : response))
+          setNewName('');
+          setNewNumber('');
           setNotificationMessage("green", `${person.name} updated.`)
         })
+        .catch(error => console.log(error))
       return;
     }
 
@@ -40,6 +43,7 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
 
         setNotificationMessage("green", `${response.name} added.`)
       })
+      .catch(error => console.log(error))
   }
 
   const handleNameInputChanged = (event) => {
@@ -63,7 +67,7 @@ const Form = ({ persons, newName, newNumber, setPersons, setNewNumber, setNewNam
 
         <div>
           Number: <input
-            type='number'
+            /*type='number'*/
             value={newNumber}
             onChange={handleNumberInputChanged} />
         </div>

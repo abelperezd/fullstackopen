@@ -1,11 +1,17 @@
+---
+
 initialize a project:
 npm init
+
+---
 
 how to start and run a node project with Vite:
 npm create vite@latest part1 -- --template react
 cd part1
 npm install
 npm run dev
+
+---
 
 install test-server:
 in the root of the project: 
@@ -17,6 +23,8 @@ to install it as developer dependency:
         "server": "json-server -p3001 --watch db.json"
 npm run server (in a separate console window)
 
+---
+
 install axios:
 in the root of the project:
     npm install axios
@@ -27,17 +35,27 @@ in package.json, in scripts, add:
 and you can run the project using:
 npm start
 
+---
+
 install express:
 npm install express
+
+---
 
 update project dependencies:
 npm update
 
+---
+
 install all dependencies in the package.json file:
 npm install
 
+---
+
 install nodemon (it allows us to avoid having to restart the application every time we make a change)
 npm install --save-dev nodemon
+
+---
 
 start application with nodemon:
 node_modules/.bin/nodemon index.js
@@ -46,15 +64,53 @@ alternative: add this to package.json, in scripts:
 and start like this:
 npm run dev
 
+---
+
 install POSTMAN in VSCode:
 From the Extension tab on the left -> search for Postman -> First result (Verified Publisher) -> Install. You will then see an extra icon added on the activity bar below the extensions tab. 
 To use it, we have to create a folder in the root of the project named "requests" and create a file with the extension ".rest". There we will and the commands (E.g: GET http://localhost:3001/api/notes)
 And we will click "Send Request"
+
+---
 
 install cors (it allow us to communicate different ports in localhost)
 npm install cors
 const cors = require('cors')
 app.use(cors())
 
-create a production build in vite:
+---
+
+fly.io
+
+launch an app: fly launch (in root directory)
+fly.toml --> ad this below [build]:
+[env]
+  PORT = "3000" # add this
+
+deploy to the servers:
+fly deploy
+
+deploy adding .env values, e.g:
+fly secrets set MONGODB_URI='mongodb+srv://<user>:<pwd>@cluster0.4yhvi1d.mongodb.net/phonebook?retryWrites=true&w=majority'
+fly deploy
+
+log from server:
+fly logs
+
+---
+
+create a production build in vite (e.g. frontend):
 npm run build
+
+to use it from note.js, copy the created foolder into the root of node and add this:
+
+app.use(express.static('frontentFolderName'))
+
+---
+
+install dotenv (in node.js, it allows us to add credentials more securely)
+npm install dotenv
+require('dotenv').config() (at the top of the program)
+
+---
+
