@@ -114,3 +114,11 @@ require('dotenv').config() (at the top of the program)
 
 ---
 
+ESlint  (to check js errors, style included)
+npm install eslint --save-dev
+npx eslint --init //initialize default
+
+add this to scripts in package.json:
+"lint": "eslint ."
+
+and run: npm run lint
