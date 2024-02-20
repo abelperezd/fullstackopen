@@ -10,6 +10,7 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 
 const helper = require('./test_helper')
+const { CLIENT_RENEG_WINDOW } = require('tls')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -34,9 +35,16 @@ test('blogs are returned as json', async () => {
         .expect('Content-Type', /application\/json/)
 })
 
-test.only('there are six blogs', async () => {
+test('there are six blogs', async () => {
     const response = await api.get('/api/blogs')
     assert.strictEqual(response.body.length, 6)
+})
+
+test.only("id present but not _id", async () => {
+    const response = await api.get(`/api/blogs/${helper.initialBlogs[0]._id}`)
+    //console.log("result", response.body);
+    assert.ok(!('_id' in response.body));
+    assert.ok('id' in response.body);
 })
 
 after(async () => {
