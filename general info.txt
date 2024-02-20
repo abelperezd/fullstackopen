@@ -122,3 +122,13 @@ add this to scripts in package.json:
 "lint": "eslint ."
 
 and run: npm run lint
+
+---
+
+allow cros platform in Windows:
+npm install cross-env
+
+---
+
+install supertest:
+npm install --save-dev supertest
