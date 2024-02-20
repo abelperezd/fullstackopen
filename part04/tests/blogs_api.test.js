@@ -34,9 +34,8 @@ test('blogs are returned as json', async () => {
         .expect('Content-Type', /application\/json/)
 })
 
-test('there are six blogs', async () => {
+test.only('there are six blogs', async () => {
     const response = await api.get('/api/blogs')
-
     assert.strictEqual(response.body.length, 6)
 })
 
