@@ -40,11 +40,28 @@ test('there are six blogs', async () => {
     assert.strictEqual(response.body.length, 6)
 })
 
-test.only("id present but not _id", async () => {
+test("id present but not _id", async () => {
     const response = await api.get(`/api/blogs/${helper.initialBlogs[0]._id}`)
     //console.log("result", response.body);
     assert.ok(!('_id' in response.body));
     assert.ok('id' in response.body);
+})
+
+test.only("add new blog", async () => {
+    const newBlog =
+    {
+        title: "NewBlogTest",
+        author: "Test user",
+        url: "https://thisisatest.com",
+        likes: 0,
+    }
+
+    await api.post(`/api/blogs`)
+        .send(newBlog)
+        .expect(201);
+
+    const response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, 7)
 })
 
 after(async () => {
