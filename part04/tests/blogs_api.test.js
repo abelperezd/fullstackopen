@@ -1,4 +1,4 @@
-const { test, after, beforeEach } = require('node:test')
+const { describe, test, after, beforeEach } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
@@ -28,41 +28,76 @@ beforeEach(async () => {
     }
 })
 
-test('blogs are returned as json', async () => {
-    await api
-        .get('/api/blogs')
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
+describe('get the blogs in multiple ways', () => {
+    test('all blogs are returned as json', async () => {
+        await api
+            .get('/api/blogs')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+    })
+
+    test('all blogs are returned', async () => {
+        const response = await api.get('/api/blogs')
+        assert.strictEqual(response.body.length, helper.initialBlogs.length)
+    })
 })
 
-test('there are six blogs', async () => {
-    const response = await api.get('/api/blogs')
-    assert.strictEqual(response.body.length, 6)
+describe('format checks', () => {
+    test("id present but not _id", async () => {
+        const response = await api.get(`/api/blogs/${helper.initialBlogs[0]._id}`)
+        //console.log("result", response.body);
+        assert.ok(!('_id' in response.body));
+        assert.ok('id' in response.body);
+    })
 })
 
-test("id present but not _id", async () => {
-    const response = await api.get(`/api/blogs/${helper.initialBlogs[0]._id}`)
-    //console.log("result", response.body);
-    assert.ok(!('_id' in response.body));
-    assert.ok('id' in response.body);
+describe('format checks', () => {
+    test("add new blog", async () => {
+        const newBlog =
+        {
+            title: "NewBlogTest",
+            author: "Test user",
+            url: "https://thisisatest.com",
+            likes: 0,
+        }
+
+        await api.post(`/api/blogs`)
+            .send(newBlog)
+            .expect(201);
+
+        const response = await api.get('/api/blogs')
+        assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+    })
 })
 
-test.only("add new blog", async () => {
-    const newBlog =
-    {
-        title: "NewBlogTest",
-        author: "Test user",
-        url: "https://thisisatest.com",
-        likes: 0,
-    }
+describe('update blogs', () => {
+    test("update a blog", async () => {
+        const blogToUpdate = helper.initialBlogs[0];
+        blogToUpdate.author = "Michael Jordan";
+        blogToUpdate.likes = 9
 
-    await api.post(`/api/blogs`)
-        .send(newBlog)
-        .expect(201);
+        const response = await api.put(`/api/blogs/${blogToUpdate._id}`) // Include the blog post ID in the URL
+            .send(blogToUpdate);
 
-    const response = await api.get('/api/blogs')
-    assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+        console.log("result: ", response.body);
+
+        // Assert that the response body contains the updated properties
+        assert.strictEqual(response.body.id, blogToUpdate._id);
+        assert.strictEqual(response.body.author, blogToUpdate.author);
+        assert.strictEqual(response.body.likes, blogToUpdate.likes);
+    })
 })
+
+describe.only('deleting blogs', () => {
+    test.only("delete a blog", async () => {
+        const blogToDelete = helper.initialBlogs[0];
+
+        await api.delete(`/api/blogs/${blogToDelete._id}`) // Include the blog post ID in the URL
+            .send()
+            .expect(204);
+    })
+})
+
 
 after(async () => {
     await mongoose.connection.close()

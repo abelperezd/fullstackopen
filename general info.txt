@@ -132,3 +132,9 @@ npm install cross-env
 
 install supertest:
 npm install --save-dev supertest
+
+---
+
+install async automatic catch
+npm install express-async-errors
+require('express-async-errors')
