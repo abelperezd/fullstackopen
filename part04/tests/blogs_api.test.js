@@ -61,7 +61,7 @@ test.only("add new blog", async () => {
         .expect(201);
 
     const response = await api.get('/api/blogs')
-    assert.strictEqual(response.body.length, 7)
+    assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
 })
 
 after(async () => {
