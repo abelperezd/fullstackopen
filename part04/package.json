@@ -13,11 +13,13 @@
   "author": "Abel Perez",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.2",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
-    "mongoose": "^7.6.8"
+    "mongoose": "^8.0.0",
+    "mongoose-unique-validator": "^5.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
