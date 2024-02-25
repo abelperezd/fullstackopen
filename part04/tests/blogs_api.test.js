@@ -100,7 +100,7 @@ describe('deleting blogs', () => {
     })
 })
 
-describe.only('when there is initially one user in db', () => {
+describe.only('user creation', () => {
     beforeEach(async () => {
         await User.deleteMany({})
 
@@ -110,7 +110,7 @@ describe.only('when there is initially one user in db', () => {
         await user.save()
     })
 
-    test.only('creation succeeds with a fresh username', async () => {
+    test('creation succeeds with a fresh username', async () => {
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
@@ -132,7 +132,7 @@ describe.only('when there is initially one user in db', () => {
         assert(usernames.includes(newUser.username))
     })
 
-    test.only('creation fails with proper statuscode and message if username already taken', async () => {
+    test('creation fails with proper statuscode and message if username already taken', async () => {
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
@@ -149,6 +149,48 @@ describe.only('when there is initially one user in db', () => {
 
         const usersAtEnd = await helper.usersInDb()
         assert(result.body.error.includes('expected `username` to be unique'))
+
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+
+    test('creation fails with proper statuscode and message if username is not valid', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'us',
+            name: 'usserNAme',
+            password: 'papaswordord',
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('Invalid password or username'))
+
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    })
+
+    test.only('creation fails with proper statuscode and message if password is not valid', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'userrrrr',
+            name: 'usserNAme',
+            password: 'pa',
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('Invalid password or username'))
 
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
     })
