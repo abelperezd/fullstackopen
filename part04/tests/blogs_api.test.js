@@ -53,12 +53,12 @@ describe('format checks', () => {
     })
 })
 
-describe('format checks', () => {
-    test("add new blog", async () => {
+describe.only('format checks', () => {
+    test.only("add new blog", async () => {
         const newBlog =
         {
             title: "NewBlogTest",
-            author: "Test user",
+            author: "anyAuthor",
             url: "https://thisisatest.com",
             likes: 0,
         }
@@ -100,7 +100,7 @@ describe('deleting blogs', () => {
     })
 })
 
-describe.only('user creation', () => {
+describe('user creation', () => {
     beforeEach(async () => {
         await User.deleteMany({})
 
@@ -174,7 +174,7 @@ describe.only('user creation', () => {
         assert.strictEqual(usersAtEnd.length, usersAtStart.length)
     })
 
-    test.only('creation fails with proper statuscode and message if password is not valid', async () => {
+    test('creation fails with proper statuscode and message if password is not valid', async () => {
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
