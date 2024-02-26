@@ -30,7 +30,7 @@ app.use(middleware.tokenExtractor)
 
 app.use('/api/login', loginRouter)
 
-app.use('/api/blogs', blogsRouter) //set the path that will be routed to the blogsRouter
+app.use('/api/blogs', middleware.userExtractor, blogsRouter) //set the path that will be routed to the blogsRouter
 
 app.use('/api/users', usersRouter)
 
