@@ -10,12 +10,13 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
-
+  /*
+    useEffect(() => {
+      blogService.getAll().then(blogs =>
+        setBlogs(blogs)
+      )
+    }, [])
+  */
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -27,15 +28,11 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      console.log("exception", exception)
     }
   }
   const loginForm = () => (
     <form onSubmit={handleLogin}>
-      {console.log("a")}
       <div>
         username
         <input
