@@ -16,21 +16,34 @@ const App = () => {
   }
 
   useEffect(() => {
+    if (user === null) {
+      let u = window.localStorage.getItem('loggedNoteappUser');
+      if (u) {
+        u = JSON.parse(u);
+        blogService.setToken(u.token)
+        setUser(u);
+      }
+    }
+  })
+
+  useEffect(() => {
     // Check if the user is not null before fetching blogs
     if (user !== null) {
-      blogService.getAll().then(blogs =>
-        setBlogs(blogs)
-      );
+      blogService.setToken(user.token)
+      blogService.getAll().then(blogs => setBlogs(blogs));
     }
   }, [user]);
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
     try {
       const user = await loginService.login({
         username, password,
       })
+
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      )
 
       blogService.setToken(user.token)
 
@@ -40,6 +53,12 @@ const App = () => {
     } catch (exception) {
       console.log("exception", exception)
     }
+  }
+
+  const handleLogOut = () => {
+    setUser(null);
+    setBlogs([])
+    window.localStorage.removeItem('loggedNoteappUser')
   }
 
   const addBlog = (event) => {
@@ -83,6 +102,14 @@ const App = () => {
     </form>
   )
 
+  const logOut = () => (
+    <div>
+      <button
+        type="submit" onClick={handleLogOut}>Logout</button>
+    </div>
+
+  )
+
   const blogForm = () => (
     <form onSubmit={addBlog}>
       <input
@@ -93,17 +120,21 @@ const App = () => {
     </form>
   )
 
+  const formsAndButtons = () => {
+    if (user === null) {
+      return loginForm() //:
+    }
+    else {
+      //blogForm()
+      return logOut()
+    }
+  }
+
   return (
     <div>
-      {
-        //user === null ?
-        loginForm() //:
-        //blogForm()
-
-      }
+      {formsAndButtons()}
 
       <h2>blogs</h2>
-      {console.log(blogs[4])}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
