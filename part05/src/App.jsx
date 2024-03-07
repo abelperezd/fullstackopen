@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from "./Notification"
+import './App.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState('')
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -15,9 +16,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleBlogChange = (event) => {
-    setNewBlog(event.target.value)
-  }
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     if (user === null) {
@@ -34,9 +33,27 @@ const App = () => {
     // Check if the user is not null before fetching blogs
     if (user !== null) {
       blogService.setToken(user.token)
-      blogService.getAll().then(blogs => setBlogs(blogs));
+      blogService.getAll()
+        .then(blogs => {
+          setBlogs(blogs)
+        })
+        //if it is wrong, the token will probably be expired
+        .catch(() => {
+          handleLogOut();
+        })
     }
   }, [user]);
+
+  const setNotificationMessage = (color, message) => {
+    setNotification({
+      color: color,
+      text: message
+    })
+
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -55,6 +72,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
+      setNotificationMessage("red", "Wrong user o password")
       console.log("exception", exception)
     }
   }
@@ -68,6 +86,11 @@ const App = () => {
   const addBlog = (event) => {
     event.preventDefault()
 
+    if (!title || !author || !url) {
+      setNotificationMessage("red", "Some fields are empty.")
+      return;
+    }
+
     const blogObject = {
       title: title,
       author: author,
@@ -79,7 +102,7 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNewBlog('')
+        setNotificationMessage("green", `New blog ${title} added`)
         setAuthor('')
         setTitle('')
         setUrl('')
@@ -90,65 +113,73 @@ const App = () => {
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
-        username
+        Username
+        <br />
         <input
           type="text"
           value={username}
           name="Username"
+          placeholder='User name'
           onChange={({ target }) => setUsername(target.value)}
         />
       </div>
+      <br />
+      <br />
       <div>
-        password
+        Password
+        <br />
         <input
-          type="password"
+          type="Password"
           value={password}
           name="Password"
+          placeholder='Password'
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <br />
+      <button className='greenBtn' type="submit">Login</button>
     </form>
   )
 
   const logOut = () => (
     <div>
       <button
-        type="submit" onClick={handleLogOut}>Logout</button>
+        type="submit" id='logoutButton' onClick={handleLogOut}>Logout</button>
     </div>
 
   )
 
   const blogForm = () => (
     <form onSubmit={addBlog}>
-      <div>
-        Title
+      <div className="inputContainer">
         <input
           type="text"
           value={title}
           name="Title"
+          placeholder='Title'
           onChange={({ target }) => setTitle(target.value)}
         />
       </div>
-      <div>
-        Author
+      <div className="inputContainer">
         <input
           type="text"
           value={author}
           name="Author"
+          placeholder='Author'
           onChange={({ target }) => setAuthor(target.value)}
         />
       </div>
-      <div>
-        url
+      <div className="inputContainer">
         <input
           type="text"
           value={url}
           name="Url"
+          placeholder='URL'
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button type="submit">Add blog</button>
+      <button className='greenBtn' type="submit">Add blog</button>
+
     </form>
   )
 
@@ -160,7 +191,10 @@ const App = () => {
       return (
         <>
           {logOut()}
+          <br />
+          <br />
           {blogForm()}
+          <br />
         </>
       );
     }
@@ -168,15 +202,15 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notification} />
       {formsAndButtons()}
 
-      <h2>blogs</h2>
+      <h2>BLOGS</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
 }
-
 
 export default App

@@ -13,16 +13,13 @@ const setToken = newToken => {
 }
 
 const getAll = () => {
-  try {
-
-    console.log("conf", config)
-    const request = axios.get(baseUrl, config)
-    console.log("request", request)
-    return request.then(response => response.data)
-  }
-  catch (error) {
-    console.log("getAll error: ", error)
-  }
+  console.log("conf", config)
+  const request = axios.get(baseUrl, config)
+  console.log("request", request)
+  return request
+    .then(response => {
+      return response.data
+    })
 }
 
 const create = async newObject => {
