@@ -18,6 +18,10 @@ blogRouter.get('/:id', async (request, response) => {
 
 blogRouter.post('/', async (request, response) => {
 
+  if (!request.hasOwnProperty("token") || !request.hasOwnProperty("user")) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
   const user = await User.findById(request.user)
 
   request.body["user"] = request.user;
@@ -33,6 +37,11 @@ blogRouter.post('/', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
+
+  if (!request.hasOwnProperty("token") || !request.hasOwnProperty("user")) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
   const blog = await Blog.findById(request.params.id)
 
   if (!blog) {
@@ -50,8 +59,14 @@ blogRouter.delete('/:id', async (request, response) => {
 })
 
 blogRouter.put('/:id', async (request, response) => {
+
+  if (!request.hasOwnProperty("token")) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
   const body = request.body
 
+  //TODO: should not we also add the user id?
   const blog = {
     title: body.title,
     author: body.author,

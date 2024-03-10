@@ -31,17 +31,10 @@ const App = () => {
 
   useEffect(() => {
     // Check if the user is not null before fetching blogs
-    if (user !== null) {
-      blogService.setToken(user.token)
-      blogService.getAll()
-        .then(blogs => {
-          setBlogs(blogs)
-        })
-        //if it is wrong, the token will probably be expired
-        .catch(() => {
-          handleLogOut();
-        })
-    }
+    blogService.getAll()
+      .then(blogs => {
+        setBlogs(blogs)
+      })
   }, [user]);
 
   const setNotificationMessage = (color, message) => {
@@ -112,7 +105,7 @@ const App = () => {
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
-      <div>
+      <div className="inputContainer">
         Username
         <br />
         <input
@@ -123,9 +116,7 @@ const App = () => {
           onChange={({ target }) => setUsername(target.value)}
         />
       </div>
-      <br />
-      <br />
-      <div>
+      <div className="inputContainer">
         Password
         <br />
         <input
@@ -136,7 +127,6 @@ const App = () => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <br />
       <button className='greenBtn' type="submit">Login</button>
     </form>
   )
