@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from "./Notification"
 import './App.css'
+import './components/BlogForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,11 +16,11 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
   const [notification, setNotification] = useState(null)
+
+  const blogToggleRef = useRef();
+  const loginToggleRef = useRef();
+  const loginFormRef = useRef();
 
   useEffect(() => {
     if (user === null) {
@@ -60,7 +64,8 @@ const App = () => {
       )
 
       blogService.setToken(user.token)
-
+      loginFormRef.current.setIsUserLoggedIn(true)
+      loginToggleRef.current.toggleVisibility()
       setUser(user)
       setUsername('')
       setPassword('')
@@ -74,126 +79,45 @@ const App = () => {
     setUser(null);
     setBlogs([])
     window.localStorage.removeItem('loggedNoteappUser')
+    loginFormRef.current.setIsUserLoggedIn(false)
+    loginToggleRef.current.toggleVisibility()
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-
-    if (!title || !author || !url) {
-      setNotificationMessage("red", "Some fields are empty.")
-      return;
-    }
-
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url
-    }
-
+  const addBlog = (blogObject) => {
+    blogToggleRef.current.toggleVisibility()
 
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNotificationMessage("green", `New blog ${title} added`)
-        setAuthor('')
-        setTitle('')
-        setUrl('')
+        setNotificationMessage("green", `New blog ${returnedBlog.title} added`)
       })
-
-  }
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div className="inputContainer">
-        Username
-        <br />
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          placeholder='User name'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div className="inputContainer">
-        Password
-        <br />
-        <input
-          type="Password"
-          value={password}
-          name="Password"
-          placeholder='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button className='greenBtn' type="submit">Login</button>
-    </form>
-  )
-
-  const logOut = () => (
-    <div>
-      <button
-        type="submit" id='logoutButton' onClick={handleLogOut}>Logout</button>
-    </div>
-
-  )
-
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div className="inputContainer">
-        <input
-          type="text"
-          value={title}
-          name="Title"
-          placeholder='Title'
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div className="inputContainer">
-        <input
-          type="text"
-          value={author}
-          name="Author"
-          placeholder='Author'
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div className="inputContainer">
-        <input
-          type="text"
-          value={url}
-          name="Url"
-          placeholder='URL'
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button className='greenBtn' type="submit">Add blog</button>
-
-    </form>
-  )
-
-  const formsAndButtons = () => {
-    if (user === null) {
-      return loginForm() //:
-    }
-    else {
-      return (
-        <>
-          {logOut()}
-          <br />
-          <br />
-          {blogForm()}
-          <br />
-        </>
-      );
-    }
   }
 
   return (
     <div>
       <Notification message={notification} />
-      {formsAndButtons()}
+      {user == null ?
+        <Togglable buttonLabel='Login' ref={loginToggleRef}>
+          <LoginForm
+            handleLogin={handleLogin} username={username} setUsername={setUsername}
+            password={password} setPassword={setPassword}
+            handleLogOut={handleLogOut} ref={loginFormRef}
+          />
+        </Togglable>
+        :
+        <div>
+          <button
+            type="submit" id='logoutButton' onClick={handleLogOut}>Logout</button>
+        </div>}
+
+      {user != null &&
+        <Togglable buttonLabel='New blog' ref={blogToggleRef}>
+          <BlogForm
+            addBlog={addBlog} setNotificationMessage={setNotificationMessage}
+          />
+        </Togglable>
+      }
 
       <h2>BLOGS</h2>
       {blogs.map(blog =>
