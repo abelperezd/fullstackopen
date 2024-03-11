@@ -1,28 +1,7 @@
 import { useState, useImperativeHandle, forwardRef } from 'react'
+import './LoginForm.css'
 
-
-const LoginForm = forwardRef(({ handleLogin, username, setUsername, password, setPassword, handleLogOut }, ref) => {
-
-    const [userLogedin, setUserLogedin] = useState(false)
-
-    const setIsUserLoggedIn = (val) => {
-        setUserLogedin(val)
-    }
-
-    useImperativeHandle(ref, () => {
-        return {
-            setIsUserLoggedIn
-        }
-    })
-
-    if (userLogedin) {
-        return (
-            <div>
-                <button
-                    type="submit" id='logoutButton' onClick={handleLogOut}>Logout</button>
-            </div>
-        )
-    }
+const LoginForm = forwardRef(({ handleLogin, username, setUsername, password, setPassword }, ref) => {
 
     return (
         <form onSubmit={handleLogin}>

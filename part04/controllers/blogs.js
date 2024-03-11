@@ -26,6 +26,9 @@ blogRouter.post('/', async (request, response) => {
 
   request.body["user"] = request.user;
 
+  if (!request.hasOwnProperty("likes"))
+    request.body["likes"] = 0;
+
   const blog = new Blog(request.body)
 
   const savedBlog = await blog.save();

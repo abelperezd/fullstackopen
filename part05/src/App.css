@@ -7,9 +7,7 @@ body {
     margin: 15px auto;
 }
 
-input {
-    text-align: center;
-}
+
 
 .greenBtn {
     background-color: white;
@@ -39,10 +37,6 @@ input {
     color: white;
 }
 
-.inputContainer {
-    margin-bottom: 8px;
-    /* Adjust the margin as needed */
-}
 
 h2 {
     color: grey;

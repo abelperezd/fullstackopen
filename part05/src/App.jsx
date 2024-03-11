@@ -20,7 +20,6 @@ const App = () => {
 
   const blogToggleRef = useRef();
   const loginToggleRef = useRef();
-  const loginFormRef = useRef();
 
   useEffect(() => {
     if (user === null) {
@@ -64,7 +63,6 @@ const App = () => {
       )
 
       blogService.setToken(user.token)
-      loginFormRef.current.setIsUserLoggedIn(true)
       loginToggleRef.current.toggleVisibility()
       setUser(user)
       setUsername('')
@@ -79,7 +77,6 @@ const App = () => {
     setUser(null);
     setBlogs([])
     window.localStorage.removeItem('loggedNoteappUser')
-    loginFormRef.current.setIsUserLoggedIn(false)
     loginToggleRef.current.toggleVisibility()
   }
 
@@ -90,7 +87,7 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNotificationMessage("green", `New blog ${returnedBlog.title} added`)
+        setNotificationMessage("green", `New blog '${returnedBlog.title}' added`)
       })
   }
 
@@ -102,13 +99,14 @@ const App = () => {
           <LoginForm
             handleLogin={handleLogin} username={username} setUsername={setUsername}
             password={password} setPassword={setPassword}
-            handleLogOut={handleLogOut} ref={loginFormRef}
           />
         </Togglable>
         :
         <div>
           <button
             type="submit" id='logoutButton' onClick={handleLogOut}>Logout</button>
+          <br />
+          <br />
         </div>}
 
       {user != null &&
@@ -121,7 +119,10 @@ const App = () => {
 
       <h2>BLOGS</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <div key={blog.id}>
+          <Blog blog={blog} />
+          <br />
+        </div>
       )}
     </div>
   )
