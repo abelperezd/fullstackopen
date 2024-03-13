@@ -5,7 +5,7 @@ import { useRef } from 'react'
 const Blog = ({ blog }) => {
 
   const toggleRef = useRef();
-
+  console.log(blog)
   return (
     <div id='blg'>
       {blog.title}

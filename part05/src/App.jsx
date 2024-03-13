@@ -86,8 +86,18 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
+        returnedBlog["user"] = user;
         setBlogs(blogs.concat(returnedBlog))
         setNotificationMessage("green", `New blog '${returnedBlog.title}' added`)
+      })
+      .catch(error => {
+        if (error.response && error.response.status === 401) {
+          setNotificationMessage("red", "Session expired. Log in again.")
+          handleLogOut();
+          // Unauthorized error
+        } else {
+          console.error('Error creating blog:', error);
+        }
       })
   }
 
