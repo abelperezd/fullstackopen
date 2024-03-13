@@ -5,7 +5,6 @@ import { useRef } from 'react'
 const Blog = ({ blog, handleLikeBtnPressed }) => {
 
   const toggleRef = useRef();
-  console.log(blog)
 
   const likeBtnPressed = () => {
     handleLikeBtnPressed(blog);

@@ -36,7 +36,7 @@ const App = () => {
     // Check if the user is not null before fetching blogs
     blogService.getAll()
       .then(blogs => {
-        setBlogs(blogs)
+        setBlogs(blogs.sort(likesSorter))
       })
   }, [user]);
 
@@ -77,16 +77,14 @@ const App = () => {
     setUser(null);
     setBlogs([])
     window.localStorage.removeItem('loggedNoteappUser')
-    loginToggleRef.current.toggleVisibility()
   }
 
   const handleLikeBtnPressed = (blog) => {
-    console.log(blog);
     blog.likes += 1;
     blogService.update(blog.id, blog)
       .then(updatedBlog => {
         updatedBlog["user"] = user;
-        setBlogs(blogs.map(b => b.id !== blog.id ? b : updatedBlog))
+        setBlogs(blogs.map(b => b.id !== blog.id ? b : updatedBlog).sort(likesSorter))
       })
       .catch(error => {
         // Unauthorized error
@@ -106,7 +104,7 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         returnedBlog["user"] = user;
-        setBlogs(blogs.concat(returnedBlog))
+        setBlogs(blogs.concat(returnedBlog).sort(likesSorter))
         setNotificationMessage("green", `New blog '${returnedBlog.title}' added`)
       })
       .catch(error => {
@@ -118,6 +116,10 @@ const App = () => {
           console.error('Error creating blog:', error);
         }
       })
+  }
+
+  function likesSorter(a, b) {
+    return b.likes - a.likes;
   }
 
   return (
@@ -133,7 +135,7 @@ const App = () => {
         :
         <div>
           <button
-            type="submit" id='logoutButton' onClick={handleLogOut}>Logout</button>
+            id='logoutButton' onClick={handleLogOut}>Logout</button>
           <br />
           <br />
         </div>}
