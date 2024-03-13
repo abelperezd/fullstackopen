@@ -2,13 +2,9 @@ import './Blog.css'
 import Togglable from './Togglable'
 import { useRef } from 'react'
 
-const Blog = ({ blog, handleLikeBtnPressed }) => {
+const Blog = ({ myUser, blog, handleLikeBtnPressed, handleRemoveBtnPressed }) => {
 
   const toggleRef = useRef();
-
-  const likeBtnPressed = () => {
-    handleLikeBtnPressed(blog);
-  }
 
   return (
     <div id='blg'>
@@ -19,8 +15,13 @@ const Blog = ({ blog, handleLikeBtnPressed }) => {
           <li><span className='title'>Url:</span> <span className='content'>{blog.url}</span></li>
           <li><span className='title'>User:</span> <span className='content'>{blog.user.username}</span></li>
           <li><span className='title'>Likes:</span> <span className='content'>{blog.likes} </span>
-            <button id='likeBtn' onClick={likeBtnPressed}>&#128077;</button></li>
+            <button id='likeBtn' onClick={() => handleLikeBtnPressed(blog)}>&#128077;</button></li>
         </ul>
+        {myUser != null && blog.user.username === myUser.username ?
+          <div><button id='deleteBtn' onClick={() => handleRemoveBtnPressed(blog)}>&#x1F5D1;</button></div>
+          : <></>
+        }
+        <br />
       </Togglable>
     </div>
   )

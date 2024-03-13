@@ -97,6 +97,22 @@ const App = () => {
       })
   }
 
+  const handleRemoveBtnPressed = (blog) => {
+    blogService.remove(blog.id)
+      .then(response => {
+        setBlogs(blogs.filter(item => item != blog))
+      })
+      .catch(error => {
+        // Unauthorized error
+        if (error.response && error.response.status === 401) {
+          setNotificationMessage("red", "Session expired. Log in again.")
+          handleLogOut();
+        } else {
+          console.error('Error deleting blog:', error);
+        }
+      })
+  }
+
   const addBlog = (blogObject) => {
     blogToggleRef.current.toggleVisibility()
 
@@ -151,7 +167,7 @@ const App = () => {
       <h2>BLOGS</h2>
       {blogs.map(blog =>
         <div key={blog.id}>
-          <Blog blog={blog} handleLikeBtnPressed={handleLikeBtnPressed} />
+          <Blog myUser={user} blog={blog} handleLikeBtnPressed={handleLikeBtnPressed} handleRemoveBtnPressed={handleRemoveBtnPressed} />
           <br />
         </div>
       )}
