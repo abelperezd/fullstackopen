@@ -7,8 +7,6 @@ body {
     margin: 15px auto;
 }
 
-
-
 .greenBtn {
     background-color: white;
     color: black;
@@ -19,7 +17,6 @@ body {
 
 .greenBtn:hover {
     background-color: darkgreen;
-    /* Green */
     color: white;
 }
 
@@ -33,10 +30,8 @@ body {
 
 #logoutButton:hover {
     background-color: darkred;
-    /* Green */
     color: white;
 }
-
 
 h2 {
     color: grey;

@@ -80,6 +80,25 @@ const App = () => {
     loginToggleRef.current.toggleVisibility()
   }
 
+  const handleLikeBtnPressed = (blog) => {
+    console.log(blog);
+    blog.likes += 1;
+    blogService.update(blog.id, blog)
+      .then(updatedBlog => {
+        updatedBlog["user"] = user;
+        setBlogs(blogs.map(b => b.id !== blog.id ? b : updatedBlog))
+      })
+      .catch(error => {
+        // Unauthorized error
+        if (error.response && error.response.status === 401) {
+          setNotificationMessage("red", "Session expired. Log in again.")
+          handleLogOut();
+        } else {
+          console.error('Error updating blog:', error);
+        }
+      })
+  }
+
   const addBlog = (blogObject) => {
     blogToggleRef.current.toggleVisibility()
 
@@ -92,9 +111,9 @@ const App = () => {
       })
       .catch(error => {
         if (error.response && error.response.status === 401) {
+          // Unauthorized error
           setNotificationMessage("red", "Session expired. Log in again.")
           handleLogOut();
-          // Unauthorized error
         } else {
           console.error('Error creating blog:', error);
         }
@@ -130,7 +149,7 @@ const App = () => {
       <h2>BLOGS</h2>
       {blogs.map(blog =>
         <div key={blog.id}>
-          <Blog blog={blog} />
+          <Blog blog={blog} handleLikeBtnPressed={handleLikeBtnPressed} />
           <br />
         </div>
       )}
