@@ -11,8 +11,8 @@ const BlogForm = ({ addBlog, setNotificationMessage }) => {
     event.preventDefault()
 
     if (!title || !author || !url) {
-      setNotificationMessage("red", "Some fields are empty.")
-      return;
+      setNotificationMessage('red', 'Some fields are empty.')
+      return
     }
 
     const blogObject = {

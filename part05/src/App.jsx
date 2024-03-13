@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Notification from "./Notification"
+import Notification from './Notification'
 import './App.css'
 import './components/BlogForm'
 import BlogForm from './components/BlogForm'
@@ -18,19 +18,19 @@ const App = () => {
 
   const [notification, setNotification] = useState(null)
 
-  const blogToggleRef = useRef();
-  const loginToggleRef = useRef();
+  const blogToggleRef = useRef()
+  const loginToggleRef = useRef()
 
   useEffect(() => {
     if (user === null) {
-      let u = window.localStorage.getItem('loggedNoteappUser');
+      let u = window.localStorage.getItem('loggedNoteappUser')
       if (u) {
-        u = JSON.parse(u);
+        u = JSON.parse(u)
         blogService.setToken(u.token)
-        setUser(u);
+        setUser(u)
       }
     }
-  })
+  }, [user])
 
   useEffect(() => {
     // Check if the user is not null before fetching blogs
@@ -38,7 +38,7 @@ const App = () => {
       .then(blogs => {
         setBlogs(blogs.sort(likesSorter))
       })
-  }, [user]);
+  }, [user])
 
   const setNotificationMessage = (color, message) => {
     setNotification({
@@ -68,31 +68,31 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setNotificationMessage("red", "Wrong user o password")
-      console.log("exception", exception)
+      setNotificationMessage('red', 'Wrong user o password')
+      console.log('exception', exception)
     }
   }
 
   const handleLogOut = () => {
-    setUser(null);
+    setUser(null)
     setBlogs([])
     window.localStorage.removeItem('loggedNoteappUser')
   }
 
   const handleLikeBtnPressed = (blog) => {
-    blog.likes += 1;
+    blog.likes += 1
     blogService.update(blog.id, blog)
       .then(updatedBlog => {
-        updatedBlog["user"] = user;
+        updatedBlog['user'] = user
         setBlogs(blogs.map(b => b.id !== blog.id ? b : updatedBlog).sort(likesSorter))
       })
       .catch(error => {
         // Unauthorized error
         if (error.response && error.response.status === 401) {
-          setNotificationMessage("red", "Session expired. Log in again.")
-          handleLogOut();
+          setNotificationMessage('red', 'Session expired. Log in again.')
+          handleLogOut()
         } else {
-          console.error('Error updating blog:', error);
+          console.error('Error updating blog:', error)
         }
       })
   }
@@ -100,15 +100,15 @@ const App = () => {
   const handleRemoveBtnPressed = (blog) => {
     blogService.remove(blog.id)
       .then(response => {
-        setBlogs(blogs.filter(item => item != blog))
+        setBlogs(blogs.filter(item => item !== blog))
       })
       .catch(error => {
         // Unauthorized error
         if (error.response && error.response.status === 401) {
-          setNotificationMessage("red", "Session expired. Log in again.")
-          handleLogOut();
+          setNotificationMessage('red', 'Session expired. Log in again.')
+          handleLogOut()
         } else {
-          console.error('Error deleting blog:', error);
+          console.error('Error deleting blog:', error)
         }
       })
   }
@@ -119,29 +119,29 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
-        returnedBlog["user"] = user;
+        returnedBlog['user'] = user
         setBlogs(blogs.concat(returnedBlog).sort(likesSorter))
-        setNotificationMessage("green", `New blog '${returnedBlog.title}' added`)
+        setNotificationMessage('green', `New blog '${returnedBlog.title}' added`)
       })
       .catch(error => {
         if (error.response && error.response.status === 401) {
           // Unauthorized error
-          setNotificationMessage("red", "Session expired. Log in again.")
-          handleLogOut();
+          setNotificationMessage('red', 'Session expired. Log in again.')
+          handleLogOut()
         } else {
-          console.error('Error creating blog:', error);
+          console.error('Error creating blog:', error)
         }
       })
   }
 
   function likesSorter(a, b) {
-    return b.likes - a.likes;
+    return b.likes - a.likes
   }
 
   return (
     <div>
       <Notification message={notification} />
-      {user == null ?
+      {user === null ?
         <Togglable buttonLabel='Login' ref={loginToggleRef}>
           <LoginForm
             handleLogin={handleLogin} username={username} setUsername={setUsername}
@@ -156,7 +156,7 @@ const App = () => {
           <br />
         </div>}
 
-      {user != null &&
+      {user !== null &&
         <Togglable buttonLabel='New blog' ref={blogToggleRef}>
           <BlogForm
             addBlog={addBlog} setNotificationMessage={setNotificationMessage}

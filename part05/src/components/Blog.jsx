@@ -1,10 +1,11 @@
 import './Blog.css'
 import Togglable from './Togglable'
 import { useRef } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ myUser, blog, handleLikeBtnPressed, handleRemoveBtnPressed }) => {
 
-  const toggleRef = useRef();
+  const toggleRef = useRef()
 
   return (
     <div id='blg'>
@@ -17,7 +18,7 @@ const Blog = ({ myUser, blog, handleLikeBtnPressed, handleRemoveBtnPressed }) =>
           <li><span className='title'>Likes:</span> <span className='content'>{blog.likes} </span>
             <button id='likeBtn' onClick={() => handleLikeBtnPressed(blog)}>&#128077;</button></li>
         </ul>
-        {myUser != null && blog.user.username === myUser.username ?
+        {myUser !== null && blog.user.username === myUser.username ?
           <div><button id='deleteBtn' onClick={() => handleRemoveBtnPressed(blog)}>&#x1F5D1;</button></div>
           : <></>
         }
@@ -25,6 +26,15 @@ const Blog = ({ myUser, blog, handleLikeBtnPressed, handleRemoveBtnPressed }) =>
       </Togglable>
     </div>
   )
+}
+
+//myUser, blog, handleLikeBtnPressed, handleRemoveBtnPressed }
+
+Blog.propTypes = {
+  myUser: PropTypes.object.isRequired,
+  blog: PropTypes.object.isRequired,
+  handleLikeBtnPressed: PropTypes.func.isRequired,
+  handleRemoveBtnPressed: PropTypes.func.isRequired,
 }
 
 export default Blog
