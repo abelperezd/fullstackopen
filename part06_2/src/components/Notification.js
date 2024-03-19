@@ -1,4 +1,4 @@
-const Notification = () => {
+const Notification.jsx = () => {
   const style = {
     border: 'solid',
     padding: 10,
@@ -11,4 +11,4 @@ const Notification = () => {
   )
 }
 
-export default Notification
+export default Notification.jsx
