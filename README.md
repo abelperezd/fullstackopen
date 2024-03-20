@@ -1,4 +1,3 @@
-# TankStrategy
 Exercises done in the [fullstackopen](https://fullstackopen.com/en/) course. It covers an introduction to React.js and Redux, Node.js and Express.js, MongoDB and communication with servers in the cloud.
 
 ## [Part 01](https://fullstackopen.com/en/part1)
